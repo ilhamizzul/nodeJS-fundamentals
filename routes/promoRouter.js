@@ -18,7 +18,7 @@ promoRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err))
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Promotions.create(req.body).then((promotion) => {
         res.statusCode = 200
         res.setHeader = ('Content-Type', 'application/json')
@@ -26,11 +26,11 @@ promoRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err))
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     res.statusCode = 403
     res.end('PUT method not supported on /promotions')
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Promotions.remove({}).then((response) => {
         res.statusCode = 200
         res.setHeader = ('Content-Type', 'application/json')
@@ -48,11 +48,11 @@ promoRouter.route('/:promoId')
     }, (err) => next(err))
     .catch((err) => next(err))
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     res.statusCode = 403
     res.end('POST method not supported on /promotions/'+req.params.promoId)
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Promotions.findByIdAndUpdate(req.params.promoId, {$set: req.body}, { new:true }).then((promotion) => {
         res.statusCode = 200
         res.setHeader = ('Content-Type', 'application/json')
@@ -60,7 +60,7 @@ promoRouter.route('/:promoId')
     }, (err) => next(err))
     .catch((err) => next(err))
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Promotions.findByIdAndDelete(req.params.promoId).then((response) => {
         res.statusCode = 200
         res.setHeader = ('Content-Type', 'application/json')
